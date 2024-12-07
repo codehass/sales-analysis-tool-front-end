@@ -12,10 +12,8 @@ import {
 import { Bar } from 'vue-chartjs';
 import type { ChartData, ChartOptions } from 'chart.js';
 
-// Register required Chart.js components
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
-// Define props with proper types
 defineProps({
   chartData: {
     type: Object as () => ChartData<'bar', number[], string>,
@@ -23,7 +21,7 @@ defineProps({
   },
   chartOptions: {
     type: Object as () => ChartOptions<'bar'>,
-    required: false,
+    required: true,
   },
 });
 

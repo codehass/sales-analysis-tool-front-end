@@ -10,10 +10,8 @@ import {
 import { Pie } from 'vue-chartjs';
 import type { ChartData, ChartOptions } from 'chart.js';
 
-// Register required Chart.js components
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
-// Define props with proper types
 defineProps({
   chartData: {
     type: Object as () => ChartData<'pie', number[], string>,
@@ -21,7 +19,7 @@ defineProps({
   },
   chartOptions: {
     type: Object as () => ChartOptions<'pie'>,
-    required: false,
+    required: true,
   },
 });
 
