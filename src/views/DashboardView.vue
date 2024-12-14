@@ -2,14 +2,14 @@
 import axios from 'axios';
 import { defineComponent } from 'vue';
 import BarChart from '@/components/BarChart.vue';
-import PieChart from '@/components/PieChart.vue';
+// import PieChart from '@/components/PieChart.vue';
 import type { ChartData, ChartOptions } from 'chart.js';
 
 export default defineComponent({
   name: 'DashboardView',
   components: {
     BarChart,
-    PieChart,
+    // PieChart,
   },
   data() {
     return {
@@ -251,7 +251,7 @@ export default defineComponent({
           <h2 class="text-xl font-semibold mb-4">Sales Distribution</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <BarChart :chartData="barChartData" :chartOptions="barChartOptions" />
-            <PieChart :chartData="pieChartData" :chartOptions="pieChartOptions" />
+            <!-- <PieChart :chartData="pieChartData" :chartOptions="pieChartOptions" /> -->
           </div>
         </div>
 
