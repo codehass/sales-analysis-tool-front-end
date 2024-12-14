@@ -14,7 +14,7 @@ export default defineComponent({
   data() {
     return {
       totalSales: 0,
-      productLimit: 3,
+      productLimit: 5,
       topProducts: [] as Array<{ productID: string; productName: string; quantitySold: number }>,
       salesByCategory: [] as Array<{ category: string; percentage: number; salesCount: number }>,
       barChartData: {
@@ -34,17 +34,19 @@ export default defineComponent({
   async created() {
     try {
       // Fetch total sales
-      const salesResponse = await axios.get('http://localhost:5000/api/v1/analytics/total_sales');
+      const salesResponse = await axios.get('https://sales-analysis-tool-back-end.onrender.com/api/v1/analytics/total_sales');
       this.totalSales = salesResponse.data.totalSales;
 
+      console.log(this.totalSales);
+
       // Fetch trending products
-      const trendingResponse = await axios.get(`http://localhost:5000/api/v1/analytics/trending_products`, {
-        params: { limit: this.productLimit },
-      });
+      const trendingResponse = await axios.get(`https://sales-analysis-tool-back-end.onrender.com/api/v1/analytics/trending_products`,{
+          params: { limit: this.productLimit },
+       });
       this.topProducts = trendingResponse.data;
 
       // Fetch category sales
-      const categorySalesResponse = await axios.get('http://localhost:5000/api/v1/analytics/category_sales');
+      const categorySalesResponse = await axios.get('https://sales-analysis-tool-back-end.onrender.com/api/v1/analytics/category_sales');
       this.salesByCategory = categorySalesResponse.data;
 
       console.log(this.salesByCategory);
@@ -59,18 +61,18 @@ export default defineComponent({
     }
   },
   methods: {
-    fetchTrendingProducts() {
-      axios
-        .get(`http://localhost:5000/api/v1/analytics/trending_products`, {
-          params: { limit: this.productLimit },
-        })
-        .then((response) => {
-          this.topProducts = response.data;
-        })
-        .catch(() => {
-          this.errorMessage = 'Failed to fetch trending products.';
-        });
-    },
+    // fetchTrendingProducts() {
+    //   axios
+    //     .get(`http://localhost:5000/api/v1/analytics/trending_products`, {
+    //       params: { limit: this.productLimit },
+    //     })
+    //     .then((response) => {
+    //       this.topProducts = response.data;
+    //     })
+    //     .catch(() => {
+    //       this.errorMessage = 'Failed to fetch trending products.';
+    //     });
+    // },
     prepareChartData() {
       this.barChartData = {
         labels: this.salesByCategory.map((category) => category.category),
@@ -194,25 +196,16 @@ export default defineComponent({
               />
             </svg>
             <div>
-              <h2 class="text-lg font-semibold">Sales Percentage</h2>
+              <h2 class="text-lg font-semibold">Categories</h2>
               <p class="text-2xl font-bold text-yellow-700">{{ salesByCategory.length }}</p>
             </div>
-          </div>
-        </div>
-
-        <!-- Sales Charts -->
-        <div class="mb-6">
-          <h2 class="text-xl font-semibold mb-4">Sales Distribution</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BarChart :chartData="barChartData" :chartOptions="barChartOptions" />
-            <PieChart :chartData="pieChartData" :chartOptions="pieChartOptions" />
           </div>
         </div>
 
         <!-- Top Selling Products List -->
         <div>
           <h2 class="text-xl font-semibold mb-4">Top Selling Products</h2>
-          <div class="flex items-center mb-4">
+          <!-- <div class="flex items-center mb-4">
             <label for="limit" class="mr-2 font-medium">Number of products:</label>
             <input
               id="limit"
@@ -221,7 +214,7 @@ export default defineComponent({
               @change="fetchTrendingProducts"
               class="border border-gray-300 rounded px-2 py-1"
             />
-          </div>
+          </div> -->
           <ul v-if="topProducts.length" class="space-y-3">
             <li
               v-for="product in topProducts"
@@ -252,6 +245,16 @@ export default defineComponent({
           </ul>
           <p v-else class="text-gray-500">No data available.</p>
         </div>
+        
+        <!-- Sales Charts -->
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold mb-4">Sales Distribution</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <BarChart :chartData="barChartData" :chartOptions="barChartOptions" />
+            <PieChart :chartData="pieChartData" :chartOptions="pieChartOptions" />
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
